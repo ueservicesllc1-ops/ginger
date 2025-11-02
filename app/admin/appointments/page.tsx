@@ -15,12 +15,7 @@ export default function AdminAppointmentsPage() {
   const [filter, setFilter] = useState<'all' | 'pending' | 'confirmed' | 'completed' | 'cancelled'>('all');
 
   useEffect(() => {
-    const adminSession = localStorage.getItem('admin_session');
-    if (!adminSession) {
-      router.push('/admin/login');
-      return;
-    }
-
+    // La autenticación se maneja en el layout
     loadAppointments();
   }, [router]);
 

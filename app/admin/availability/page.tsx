@@ -29,12 +29,7 @@ export default function AdminAvailabilityPage() {
   const [pricePerHour, setPricePerHour] = useState<number>(25.00);
 
   useEffect(() => {
-    const adminSession = localStorage.getItem('admin_session');
-    if (!adminSession) {
-      router.push('/admin/login');
-      return;
-    }
-
+    // La autenticación se maneja en el layout
     loadSettings();
   }, [router]);
 

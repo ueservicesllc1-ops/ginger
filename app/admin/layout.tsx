@@ -21,7 +21,8 @@ export default function AdminLayout({
     if (!loading) {
       if (!user || !isAdmin) {
         if (pathname !== '/admin/login') {
-          router.push('/admin/login');
+          // Redirigir inmediatamente al login
+          router.replace('/admin/login');
         }
       }
     }

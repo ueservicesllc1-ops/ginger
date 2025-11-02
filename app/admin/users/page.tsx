@@ -17,12 +17,7 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const adminSession = localStorage.getItem('admin_session');
-    if (!adminSession) {
-      router.push('/admin/login');
-      return;
-    }
-
+    // La autenticación se maneja en el layout
     loadUsers();
   }, [router]);
 
