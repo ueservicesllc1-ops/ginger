@@ -61,14 +61,14 @@ export default function Home() {
       
       {/* Hero Banner */}
       <section className="relative w-full overflow-hidden">
-        <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[350px]">
+        <div className="relative w-full h-[180px] sm:h-[250px] md:h-[300px] lg:h-[350px]">
           <Image
             src="/images/banner.png"
             alt="Banner"
             fill
-            className="object-cover"
+            className="object-cover object-center"
             priority
-            sizes="100vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
             quality={90}
           />
           {/* Efectos flotantes y destellos */}
