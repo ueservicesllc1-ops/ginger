@@ -9,11 +9,28 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const { signIn, signInWithGoogle, user, isAdmin, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  
+  // Intentar obtener auth de forma segura
+  let authContext = null;
+  try {
+    authContext = useAuth();
+  } catch (err: any) {
+    console.error('Error obteniendo AuthContext:', err);
+    if (!authError) {
+      setAuthError('Error al inicializar autenticación. Por favor, recarga la página.');
+    }
+  }
+
+  const signIn = authContext?.signIn;
+  const signInWithGoogle = authContext?.signInWithGoogle;
+  const user = authContext?.user || null;
+  const isAdmin = authContext?.isAdmin || false;
+  const loading = authContext?.loading ?? true;
 
   // Si ya está autenticado y es admin, redirigir al dashboard
   useEffect(() => {
@@ -26,6 +43,12 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setError('');
     setSubmitting(true);
+
+    if (!signIn) {
+      setError('El sistema de autenticación no está disponible. Por favor, recarga la página.');
+      setSubmitting(false);
+      return;
+    }
 
     try {
       await signIn(email, password);
@@ -55,6 +78,12 @@ export default function AdminLoginPage() {
     setError('');
     setSubmitting(true);
 
+    if (!signInWithGoogle) {
+      setError('El sistema de autenticación no está disponible. Por favor, recarga la página.');
+      setSubmitting(false);
+      return;
+    }
+
     try {
       await signInWithGoogle();
       // El useEffect se encargará de redirigir si es admin
@@ -79,6 +108,29 @@ export default function AdminLoginPage() {
       setSubmitting(false);
     }
   };
+
+  // Mostrar error si no se puede obtener el contexto
+  if (authError && !authContext) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center px-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
+          <div className="text-red-600 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error de Autenticación</h2>
+          <p className="text-gray-600 mb-6">{authError}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+          >
+            Recargar Página
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Mostrar loading mientras se inicializa auth
   if (loading) {
