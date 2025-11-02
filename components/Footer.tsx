@@ -59,68 +59,71 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Enlaces Rápidos */}
-          <div>
-            <h3 className="text-white font-semibold text-lg mb-4">Enlaces Rápidos</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="hover:text-white transition-colors text-sm">
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <Link href="/products" className="hover:text-white transition-colors text-sm">
-                  Productos
-                </Link>
-              </li>
-              <li>
-                <Link href="/cart" className="hover:text-white transition-colors text-sm">
-                  Carrito
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors text-sm">
-                  Sobre Nosotros
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors text-sm">
-                  Contacto
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Enlaces Rápidos e Información juntos */}
+          <div className="grid grid-cols-2 gap-6 md:col-span-1 lg:col-span-2">
+            {/* Enlaces Rápidos */}
+            <div>
+              <h3 className="text-white font-semibold text-lg mb-4">Enlaces Rápidos</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/" className="hover:text-white transition-colors text-sm">
+                    Inicio
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/products" className="hover:text-white transition-colors text-sm">
+                    Productos
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cart" className="hover:text-white transition-colors text-sm">
+                    Carrito
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors text-sm">
+                    Sobre Nosotros
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors text-sm">
+                    Contacto
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          {/* Información */}
-          <div>
-            <h3 className="text-white font-semibold text-lg mb-4">Información</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/privacy-policy" className="hover:text-white transition-colors text-sm">
-                  Política de Privacidad
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms-and-conditions" className="hover:text-white transition-colors text-sm">
-                  Términos y Condiciones
-                </Link>
-              </li>
-              <li>
-                <Link href="/return-policy" className="hover:text-white transition-colors text-sm">
-                  Política de Devoluciones
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-white transition-colors text-sm">
-                  Preguntas Frecuentes
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-white transition-colors text-sm">
-                  Envíos y Entregas
-                </Link>
-              </li>
-            </ul>
+            {/* Información */}
+            <div>
+              <h3 className="text-white font-semibold text-lg mb-4">Información</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="/privacy-policy" className="hover:text-white transition-colors text-sm">
+                    Política de Privacidad
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms-and-conditions" className="hover:text-white transition-colors text-sm">
+                    Términos y Condiciones
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/return-policy" className="hover:text-white transition-colors text-sm">
+                    Política de Devoluciones
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/faq" className="hover:text-white transition-colors text-sm">
+                    Preguntas Frecuentes
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white transition-colors text-sm">
+                    Envíos y Entregas
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Contacto */}
