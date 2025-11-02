@@ -13,7 +13,7 @@
 
 1. **Abre la app en Safari** (no en Chrome):
    ```
-   https://ginger-production-26da.up.railway.app
+   https://ginbriexpress.shop
    ```
 
 2. **Toca el botón "Compartir"** (cuadrado con flecha hacia arriba) en la barra inferior

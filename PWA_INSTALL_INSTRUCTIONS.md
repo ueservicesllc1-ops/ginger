@@ -12,7 +12,7 @@ La aplicación **Ginbri Store** está lista para instalarse en tu iPhone como un
 
 2. **Visita la URL de producción:**
    ```
-   https://ginger-production-26da.up.railway.app
+   https://ginbriexpress.shop
    ```
 
 3. **Toca el botón "Compartir"** 📤
@@ -106,7 +106,7 @@ Una vez instalada:
 
 ## 🎯 URL de Producción
 
-**https://ginger-production-26da.up.railway.app**
+**https://ginbriexpress.shop**
 
 ¡Abre esta URL en Safari iOS y sigue los pasos arriba! 🚀
 
