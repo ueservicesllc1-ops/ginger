@@ -116,7 +116,6 @@ export default function AdminLoginPage() {
   };
 
   console.log('🟡 [LOGIN] Verificando estado de renderizado:', {
-    authError,
     hasAuthContext: !!authContext,
     loading,
     user: !!user,
