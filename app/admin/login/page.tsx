@@ -55,13 +55,16 @@ export default function AdminLoginPage() {
 
     try {
       await signIn(email, password);
-      // Verificar que sea admin
-      if (email === 'admin@ginbristore.com') {
-        router.push('/admin');
-      } else {
-        setError('Acceso denegado. Solo administradores autorizados.');
-        setSubmitting(false);
-      }
+      // Verificar que sea admin - el isAdmin del contexto se actualizará automáticamente
+      // Esperar un momento para que el estado se actualice
+      setTimeout(() => {
+        if (isAdmin || email === 'admin@ginbristore.com' || email === 'ueservicesllc1@gmail.com') {
+          router.push('/admin');
+        } else {
+          setError('Acceso denegado. Solo administradores autorizados.');
+          setSubmitting(false);
+        }
+      }, 100);
     } catch (err: any) {
       console.error('Error de autenticación:', err);
       if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {

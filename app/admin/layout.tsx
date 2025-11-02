@@ -46,7 +46,8 @@ export default function AdminLayout({
     // Si ya terminó de cargar y no hay usuario o no es admin, redirigir
     if (!loading) {
       if (!user || !isAdmin) {
-        if (pathname !== '/admin/login') {
+        const isLoginPage = pathname === '/admin/login' || pathname === '/admin/login/';
+        if (!isLoginPage) {
           console.log('🔄 [ADMIN LAYOUT] Redirigiendo a /admin/login');
           // Redirigir inmediatamente al login
           router.replace('/admin/login');
@@ -55,8 +56,10 @@ export default function AdminLayout({
     }
   }, [user, loading, isAdmin, pathname, router]);
 
-  // Permitir acceso a login sin autenticación
-  if (pathname === '/admin/login') {
+  // Permitir acceso a login sin autenticación (verificar con y sin trailing slash)
+  const isLoginPage = pathname === '/admin/login' || pathname === '/admin/login/';
+  
+  if (isLoginPage) {
     console.log('🟢 [ADMIN LAYOUT] Ruta es /admin/login, renderizando children sin verificación');
     console.log('🟢 [ADMIN LAYOUT] Children:', children);
     return (

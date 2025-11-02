@@ -127,7 +127,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   // Verificar si el usuario es admin (por email por ahora, después se puede usar custom claims)
-  const isAdmin = user?.email === 'admin@ginbristore.com' || false;
+  const adminEmails = ['admin@ginbristore.com', 'ueservicesllc1@gmail.com'];
+  const isAdmin = user?.email ? adminEmails.includes(user.email) : false;
 
   console.log('🟡 [AUTH] Estado actual:', {
     hasUser: !!user,
