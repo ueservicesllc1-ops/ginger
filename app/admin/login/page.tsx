@@ -133,19 +133,6 @@ export default function AdminLoginPage() {
     );
   }
 
-  // Mostrar loading mientras se inicializa auth
-  if (loading) {
-    console.log('🟡 [LOGIN] Mostrando pantalla de loading');
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-          <p className="mt-4 text-white">Cargando...</p>
-        </div>
-      </div>
-    );
-  }
-
   console.log('✅ [LOGIN] Renderizando formulario de login');
 
   return (
