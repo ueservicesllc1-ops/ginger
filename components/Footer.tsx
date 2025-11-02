@@ -13,8 +13,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo y Descripción */}
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center">
+          <div className="space-y-4 md:text-left text-center">
+            <Link href="/" className="flex items-center justify-center md:justify-start">
               <div className="relative w-32 h-16">
                 <Image
                   src="/images/logo.png"
@@ -28,7 +28,7 @@ export default function Footer() {
             <p className="text-sm text-gray-400">
               Tu tienda de confianza para encontrar los mejores productos con envío rápido y seguro.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 justify-center md:justify-start">
               <motion.a
                 href="#"
                 whileHover={{ scale: 1.1, y: -2 }}
