@@ -20,16 +20,30 @@ export default function AdminLayout({
     // Verificar autenticación básica (por ahora solo verifica si hay sesión en localStorage)
     // Más adelante se puede integrar con Firebase Auth
     const checkAuth = () => {
-      const adminSession = localStorage.getItem('admin_session');
-      if (adminSession) {
-        setIsAuthenticated(true);
-      } else {
-        // Si no está en login, redirigir
+      // Verificar que estamos en el cliente
+      if (typeof window === 'undefined') {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const adminSession = localStorage.getItem('admin_session');
+        if (adminSession) {
+          setIsAuthenticated(true);
+        } else {
+          // Si no está en login, redirigir
+          if (pathname !== '/admin/login') {
+            router.push('/admin/login');
+          }
+        }
+      } catch (error) {
+        console.error('Error verificando autenticación:', error);
         if (pathname !== '/admin/login') {
           router.push('/admin/login');
         }
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     checkAuth();

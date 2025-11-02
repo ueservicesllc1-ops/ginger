@@ -12,6 +12,9 @@ export default function AdminSidebar() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Verificar que estamos en el cliente
+    if (typeof window === 'undefined') return;
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
     };

@@ -8,7 +8,9 @@ export default function AdminNavbar() {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem('admin_session');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('admin_session');
+    }
     router.push('/admin/login');
   };
 
