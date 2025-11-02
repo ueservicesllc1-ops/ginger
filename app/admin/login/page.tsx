@@ -9,49 +9,23 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const { signIn, signInWithGoogle, user, isAdmin, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [authReady, setAuthReady] = useState(false);
-
-  // Obtener auth de forma segura con manejo de errores
-  let signIn: ((email: string, password: string) => Promise<void>) | null = null;
-  let signInWithGoogle: (() => Promise<void>) | null = null;
-  let user: any = null;
-  let isAdmin = false;
-  let loading = true;
-
-  try {
-    const authContext = useAuth();
-    signIn = authContext.signIn;
-    signInWithGoogle = authContext.signInWithGoogle;
-    user = authContext.user;
-    isAdmin = authContext.isAdmin;
-    loading = authContext.loading;
-    if (!loading) setAuthReady(true);
-  } catch (err: any) {
-    console.error('Error obteniendo AuthContext:', err);
-    // Si hay error, mostrar mensaje pero dejar que la página se renderice
-  }
 
   // Si ya está autenticado y es admin, redirigir al dashboard
   useEffect(() => {
-    if (!loading && authReady && user && isAdmin) {
+    if (!loading && user && isAdmin) {
       router.push('/admin');
     }
-  }, [user, isAdmin, loading, authReady, router]);
+  }, [user, isAdmin, loading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSubmitting(true);
-
-    if (!signIn) {
-      setError('El sistema de autenticación no está disponible. Por favor, recarga la página.');
-      setSubmitting(false);
-      return;
-    }
 
     try {
       await signIn(email, password);
@@ -81,12 +55,6 @@ export default function AdminLoginPage() {
     setError('');
     setSubmitting(true);
 
-    if (!signInWithGoogle) {
-      setError('El sistema de autenticación no está disponible. Por favor, recarga la página.');
-      setSubmitting(false);
-      return;
-    }
-
     try {
       await signInWithGoogle();
       // El useEffect se encargará de redirigir si es admin
@@ -113,7 +81,7 @@ export default function AdminLoginPage() {
   };
 
   // Mostrar loading mientras se inicializa auth
-  if (loading && !authReady) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center px-4">
         <div className="text-center">
