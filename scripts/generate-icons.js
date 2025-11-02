@@ -6,7 +6,7 @@ const iconSizes = [
   72, 96, 128, 144, 152, 180, 192, 384, 512
 ];
 
-const logoPath = path.join(__dirname, '..', 'public', 'images', 'logo.png');
+const iconPath = path.join(__dirname, '..', 'public', 'images', 'icono.png');
 const iconsDir = path.join(__dirname, '..', 'public', 'icons');
 
 // Crear directorio de iconos
@@ -16,19 +16,19 @@ if (!fs.existsSync(iconsDir)) {
 
 async function generateIcons() {
   try {
-    // Verificar que existe el logo
-    if (!fs.existsSync(logoPath)) {
-      console.error('❌ Logo no encontrado en:', logoPath);
+    // Verificar que existe el icono
+    if (!fs.existsSync(iconPath)) {
+      console.error('❌ Icono no encontrado en:', iconPath);
       process.exit(1);
     }
 
-    console.log('🔄 Generando iconos desde el logo...\n');
+    console.log('🔄 Generando iconos desde icono.png...\n');
 
     // Generar cada tamaño de icono
     for (const size of iconSizes) {
       const outputPath = path.join(iconsDir, `icon-${size}x${size}.png`);
       
-      await sharp(logoPath)
+      await sharp(iconPath)
         .resize(size, size, {
           fit: 'contain',
           background: { r: 255, g: 255, b: 255, alpha: 1 }
