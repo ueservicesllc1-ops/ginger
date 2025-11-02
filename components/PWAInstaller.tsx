@@ -20,8 +20,10 @@ export default function PWAInstaller() {
     setIsStandalone(standalone);
 
     // Para Android/Chrome
-    const handler = (e: Event) => {
+    const handler = (e: any) => {
+      // Prevenir que el navegador muestre su propio banner
       e.preventDefault();
+      // Guardar el evento para usarlo después
       setDeferredPrompt(e);
       setShowInstallPrompt(true);
     };
@@ -42,18 +44,29 @@ export default function PWAInstaller() {
 
   const handleInstall = async () => {
     if (deferredPrompt) {
-      // Android/Chrome
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
+      // Android/Chrome - mostrar el prompt nativo
+      try {
+        await deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        
+        if (outcome === 'accepted') {
+          console.log('Usuario aceptó instalar la app');
+          setShowInstallPrompt(false);
+        } else {
+          console.log('Usuario rechazó instalar la app');
+        }
+        
+        // Limpiar el prompt
+        setDeferredPrompt(null);
         setShowInstallPrompt(false);
+      } catch (error) {
+        console.error('Error mostrando prompt de instalación:', error);
+        setDeferredPrompt(null);
       }
-      setDeferredPrompt(null);
     } else if (isIOS) {
       // iOS - mostrar instrucciones
       setShowInstallPrompt(false);
-      // Puedes mostrar un modal con instrucciones aquí
-      alert('Para instalar en iOS:\n1. Toca el botón compartir (cuadrado con flecha)\n2. Selecciona "Añadir a pantalla de inicio"');
+      alert('Para instalar en iOS:\n\n1. Toca el botón compartir (cuadrado con flecha) en la barra inferior\n2. Desplázate y selecciona "Añadir a pantalla de inicio"\n3. Toca "Añadir"');
     }
   };
 

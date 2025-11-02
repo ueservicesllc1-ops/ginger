@@ -36,11 +36,27 @@ self.addEventListener('activate', (event) => {
 });
 
 // Estrategia: Network First, luego Cache
+// Solo cachear requests GET para evitar errores con POST, PUT, DELETE, etc.
 self.addEventListener('fetch', (event) => {
+  // Solo interceptar requests GET para cachear
+  if (event.request.method !== 'GET') {
+    return; // Dejar pasar requests que no son GET sin cachear
+  }
+
+  // Solo cachear requests HTTP/HTTPS (no chrome-extension://, etc.)
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Clonar la respuesta
+        // Solo cachear respuestas exitosas y válidas
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
+
+        // Clonar la respuesta para cachear
         const responseToCache = response.clone();
         
         caches.open(CACHE_NAME)
@@ -51,6 +67,7 @@ self.addEventListener('fetch', (event) => {
         return response;
       })
       .catch(() => {
+        // Si falla la red, intentar obtener del cache
         return caches.match(event.request);
       })
   );
