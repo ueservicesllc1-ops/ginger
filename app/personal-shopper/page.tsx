@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import Calendar from '@/components/Calendar';
 import { motion } from 'framer-motion';
 import { Calendar as CalendarIcon, Clock, User, Mail, Phone, CheckCircle, AlertCircle, CreditCard, X } from 'lucide-react';
-import { createAppointment, getAvailableTimeSlots, isTimeSlotAvailable, getAvailabilitySettings } from '@/utils/firestore-appointments';
+import { createAppointment, getAvailableTimeSlots, isTimeSlotAvailable, getAvailabilitySettings, blockTimeSlotsForAppointment } from '@/utils/firestore-appointments';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { sendAppointmentEmail } from '@/utils/emailjs';
 
@@ -202,6 +202,9 @@ export default function PersonalShopperPage() {
         hoursCount: selectedTimes.length,
       });
 
+      // Bloquear las horas reservadas en la disponibilidad
+      await blockTimeSlotsForAppointment(dateStr, selectedTimes);
+
       // Enviar correo de confirmación
       try {
         await sendAppointmentEmail({
@@ -291,6 +294,9 @@ export default function PersonalShopperPage() {
           totalPrice: totalPrice,
           hoursCount: selectedTimes.length,
         });
+
+        // Bloquear las horas reservadas en la disponibilidad
+        await blockTimeSlotsForAppointment(dateStr, selectedTimes);
 
         // Enviar correo de confirmación
         try {

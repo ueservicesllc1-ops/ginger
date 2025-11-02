@@ -225,6 +225,56 @@ export async function saveAvailabilitySettings(
   }
 }
 
+/**
+ * Bloquear horas de cita después de un pago exitoso
+ * Remueve las horas reservadas de los timeSlots disponibles en specificDates
+ */
+export async function blockTimeSlotsForAppointment(date: string, times: string | string[]): Promise<void> {
+  try {
+    const settings = await getAvailabilitySettings();
+    if (!settings) {
+      console.warn('No hay configuración de disponibilidad para bloquear horas');
+      return;
+    }
+
+    // Convertir times a array si es string
+    const timeSlotsToBlock = Array.isArray(times) ? times : [times];
+
+    // Obtener la configuración actual de la fecha específica
+    const currentDateSettings = settings.specificDates[date] || {
+      available: true,
+      timeSlots: [],
+    };
+
+    // Remover las horas bloqueadas de los timeSlots disponibles
+    const updatedTimeSlots = currentDateSettings.timeSlots.filter(
+      (slot) => !timeSlotsToBlock.includes(slot)
+    );
+
+    // Actualizar la configuración
+    const updatedSpecificDates = {
+      ...settings.specificDates,
+      [date]: {
+        available: currentDateSettings.available,
+        timeSlots: updatedTimeSlots,
+      },
+    };
+
+    // Guardar la configuración actualizada
+    await saveAvailabilitySettings({
+      pricePerHour: settings.pricePerHour,
+      defaultAvailability: settings.defaultAvailability,
+      specificDates: updatedSpecificDates,
+      blockedDates: settings.blockedDates,
+    });
+
+    console.log(`Horas bloqueadas para ${date}: ${timeSlotsToBlock.join(', ')}`);
+  } catch (error) {
+    console.error('Error bloqueando horas de cita:', error);
+    // No lanzamos el error para no bloquear el flujo de creación de cita
+  }
+}
+
 export async function isTimeSlotAvailable(date: string, time: string): Promise<boolean> {
   try {
     // Verificar si hay una cita en esa fecha y hora
