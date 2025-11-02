@@ -361,17 +361,17 @@ export default function PersonalShopperPage() {
       <div className="min-h-screen bg-white">
         <Navbar />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-8"
+          className="text-center mb-6 sm:mb-8"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4 px-2">
             Agenda tu Cita con Personal Shopper
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             Nuestro equipo de expertos te ayudará a encontrar los mejores productos según tus necesidades
           </p>
         </motion.div>
@@ -398,9 +398,9 @@ export default function PersonalShopperPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <CalendarIcon className="w-5 h-5 text-blue-600" />
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                 Seleccionar Fecha
               </h3>
               <Calendar
@@ -420,26 +420,26 @@ export default function PersonalShopperPage() {
           >
             {/* Horarios disponibles */}
             {selectedDate && (
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-blue-600" />
+              <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                   Horarios Disponibles
                 </h3>
                 
                 {loading ? (
-                  <div className="text-center py-8">
-                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                    <p className="mt-4 text-gray-600">Cargando horarios...</p>
+                  <div className="text-center py-6 sm:py-8">
+                    <div className="inline-block animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-blue-600"></div>
+                    <p className="mt-3 sm:mt-4 text-sm sm:text-base text-gray-600">Cargando horarios...</p>
                   </div>
                 ) : availableTimeSlots.length > 0 ? (
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                     {availableTimeSlots.map((time) => (
                       <motion.button
                         key={time}
                         onClick={() => handleTimeSelect(time)}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`px-4 py-3 rounded-lg font-medium transition-all ${
+                        className={`px-3 py-2.5 sm:px-4 sm:py-3 rounded-lg text-sm sm:text-base font-medium transition-all ${
                           selectedTimes.includes(time)
                             ? 'bg-blue-600 text-white shadow-lg'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -480,9 +480,9 @@ export default function PersonalShopperPage() {
             {selectedDate && selectedTimes.length > 0 ? (
               <>
                 {/* Resumen */}
-                <div className="bg-white rounded-xl shadow-lg p-5 border-2 border-blue-200">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-blue-600" />
+                <div className="bg-white rounded-xl shadow-lg p-4 sm:p-5 border-2 border-blue-200">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                     Resumen de Cita
                   </h3>
                   
@@ -530,9 +530,9 @@ export default function PersonalShopperPage() {
                 </div>
 
                 {/* Formulario de Contacto - Compacto */}
-                <div className="bg-white rounded-xl shadow-lg p-5 border-2 border-gray-200">
-                  <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <User className="w-4 h-4 text-blue-600" />
+                <div className="bg-white rounded-xl shadow-lg p-4 sm:p-5 border-2 border-gray-200">
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2 sm:mb-3 flex items-center gap-2">
+                    <User className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                     Información de Contacto
                   </h3>
                   
@@ -631,12 +631,13 @@ export default function PersonalShopperPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[95vh] overflow-y-auto mx-2"
             >
-              <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-xl">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <CreditCard className="w-5 h-5 text-blue-600" />
-                  Selecciona Método de Pago
+              <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between rounded-t-xl">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                  <span className="hidden sm:inline">Selecciona Método de Pago</span>
+                  <span className="sm:hidden">Pago</span>
                 </h3>
                 <button
                   onClick={() => {
@@ -650,7 +651,7 @@ export default function PersonalShopperPage() {
                 </button>
               </div>
 
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {/* Resumen rápido en el modal */}
                 {selectedDate && selectedTimes.length > 0 && (
                   <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
@@ -671,14 +672,14 @@ export default function PersonalShopperPage() {
                       disabled={submitting}
                       whileHover={{ scale: submitting ? 1 : 1.02 }}
                       whileTap={{ scale: submitting ? 1 : 0.98 }}
-                      className="w-full p-4 rounded-lg border-2 border-gray-200 hover:border-blue-300 bg-white transition-all text-left flex items-center gap-4"
+                      className="w-full p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-blue-300 bg-white transition-all text-left flex items-center gap-3 sm:gap-4"
                     >
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gray-100">
-                        <span className="text-xl font-bold text-gray-600">P</span>
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center bg-gray-100 flex-shrink-0">
+                        <span className="text-lg sm:text-xl font-bold text-gray-600">P</span>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-semibold text-gray-900">PayPal</p>
-                        <p className="text-sm text-gray-600">Paga de forma segura con PayPal</p>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm sm:text-base text-gray-900">PayPal</p>
+                        <p className="text-xs sm:text-sm text-gray-600">Paga de forma segura con PayPal</p>
                       </div>
                     </motion.button>
                   )}
@@ -763,23 +764,23 @@ export default function PersonalShopperPage() {
                     disabled={submitting}
                     whileHover={{ scale: submitting ? 1 : 1.02 }}
                     whileTap={{ scale: submitting ? 1 : 0.98 }}
-                    className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 ${
+                    className={`w-full p-3 sm:p-4 rounded-lg border-2 transition-all text-left flex items-center gap-3 sm:gap-4 ${
                       selectedPaymentMethod === 'transferencia'
                         ? 'border-blue-600 bg-blue-50'
                         : 'border-gray-200 hover:border-blue-300 bg-white'
                     } ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
                       selectedPaymentMethod === 'transferencia' ? 'bg-blue-600' : 'bg-gray-100'
                     }`}>
-                      <CreditCard className={`w-6 h-6 ${selectedPaymentMethod === 'transferencia' ? 'text-white' : 'text-gray-600'}`} />
+                      <CreditCard className={`w-5 h-5 sm:w-6 sm:h-6 ${selectedPaymentMethod === 'transferencia' ? 'text-white' : 'text-gray-600'}`} />
                     </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900">Transferencia Bancaria</p>
-                      <p className="text-sm text-gray-600">Transfiere directamente a nuestra cuenta</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm sm:text-base text-gray-900">Transferencia Bancaria</p>
+                      <p className="text-xs sm:text-sm text-gray-600">Transfiere directamente a nuestra cuenta</p>
                     </div>
                     {selectedPaymentMethod === 'transferencia' && (
-                      <CheckCircle className="w-5 h-5 text-blue-600" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />
                     )}
                   </motion.button>
 
@@ -788,23 +789,23 @@ export default function PersonalShopperPage() {
                     disabled={submitting}
                     whileHover={{ scale: submitting ? 1 : 1.02 }}
                     whileTap={{ scale: submitting ? 1 : 0.98 }}
-                    className={`w-full p-4 rounded-lg border-2 transition-all text-left flex items-center gap-4 ${
+                    className={`w-full p-3 sm:p-4 rounded-lg border-2 transition-all text-left flex items-center gap-3 sm:gap-4 ${
                       selectedPaymentMethod === 'zelle'
                         ? 'border-blue-600 bg-blue-50'
                         : 'border-gray-200 hover:border-blue-300 bg-white'
                     } ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
                       selectedPaymentMethod === 'zelle' ? 'bg-blue-600' : 'bg-gray-100'
                     }`}>
-                      <span className="text-xl font-bold text-white">Z</span>
+                      <span className="text-lg sm:text-xl font-bold text-white">Z</span>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900">Zelle</p>
-                      <p className="text-sm text-gray-600">Pago rápido y seguro con Zelle</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm sm:text-base text-gray-900">Zelle</p>
+                      <p className="text-xs sm:text-sm text-gray-600">Pago rápido y seguro con Zelle</p>
                     </div>
                     {selectedPaymentMethod === 'zelle' && (
-                      <CheckCircle className="w-5 h-5 text-blue-600" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 flex-shrink-0" />
                     )}
                   </motion.button>
                 </div>
@@ -828,16 +829,16 @@ export default function PersonalShopperPage() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6"
+              className="bg-white rounded-xl shadow-2xl w-full max-w-md p-4 sm:p-6 mx-2"
           >
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
                 <CheckCircle className="h-10 w-10 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 px-2">
                 ¡Cita Agendada con Éxito!
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2">
                 Te hemos enviado un correo electrónico con los detalles de tu cita.
               </p>
               

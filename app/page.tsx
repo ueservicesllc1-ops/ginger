@@ -76,7 +76,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Promociones */}
         <motion.section
           initial="hidden"
@@ -85,8 +85,8 @@ export default function Home() {
           variants={containerVariants}
           className="mb-16"
         >
-          <motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
               Promociones Especiales
             </h2>
             <Link
@@ -113,8 +113,8 @@ export default function Home() {
           variants={containerVariants}
           className="mb-16"
         >
-          <motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
               Productos Destacados
             </h2>
             <Link
