@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ginbri-express</string>
+    <string name="title_activity_main">ginbri-express</string>
+    <string name="package_name">com.ginbri.express</string>
+    <string name="custom_url_scheme">com.ginbri.express</string>
+</resources>

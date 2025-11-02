@@ -1,65 +1,239 @@
-import Image from "next/image";
+'use client';
+
+import Link from 'next/link';
+import Navbar from '@/components/Navbar';
+import ProductCard from '@/components/ProductCard';
+import PromotionCard from '@/components/PromotionCard';
+import TestimonialCard from '@/components/TestimonialCard';
+import ProductModal from '@/components/ProductModal';
+import Footer from '@/components/Footer';
+import BannerEffects from '@/components/BannerEffects';
+import { products } from '@/data/products';
+import { promotions } from '@/data/promotions';
+import { testimonials } from '@/data/testimonials';
+import Image from 'next/image';
+import { ArrowRight, Truck, Shield, RefreshCw } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { Product } from '@/types/product';
 
 export default function Home() {
+  const featuredProducts = products.slice(0, 5);
+  const featuredPromotions = promotions.slice(0, 3);
+  const featuredTestimonials = testimonials.slice(0, 3);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedProduct(null), 300);
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-white">
+      <Navbar />
+      
+      {/* Hero Banner */}
+      <section className="relative w-full overflow-hidden">
+        <div className="relative w-full h-[250px] sm:h-[300px] lg:h-[350px]">
+          <Image
+            src="/images/banner.png"
+            alt="Banner"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+            quality={90}
+          />
+          {/* Efectos flotantes y destellos */}
+          <BannerEffects />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Promociones */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="mb-16"
+        >
+          <motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Promociones Especiales
+            </h2>
+            <Link
+              href="/products"
+              className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base flex items-center gap-1 transition-colors"
+            >
+              Ver todas
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredPromotions.map((promotion, index) => (
+              <PromotionCard key={promotion.id} promotion={promotion} index={index} />
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Productos Destacados */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="mb-16"
+        >
+          <motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Productos Destacados
+            </h2>
+            <Link
+              href="/products"
+              className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base flex items-center gap-1 transition-colors"
+            >
+              Ver todos
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+            {featuredProducts.map((product, index) => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                index={index} 
+                compact={true}
+                onCardClick={handleProductClick}
+              />
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Testimonios */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="mb-12"
+        >
+          <motion.div variants={itemVariants} className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              Lo Que Dicen Nuestros Clientes
+            </h2>
+            <p className="text-gray-600">
+              Miles de clientes satisfechos confían en nosotros
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredTestimonials.map((testimonial, index) => (
+              <TestimonialCard key={testimonial.id} testimonial={testimonial} index={index} />
+            ))}
         </div>
-      </main>
+        </motion.section>
+
+        {/* Features */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={containerVariants}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
+        >
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.05, y: -5 }}
+            className="bg-white rounded-xl shadow-lg p-6 text-center"
+          >
+            <motion.div
+              whileHover={{ rotate: 360 }}
+              transition={{ duration: 0.6 }}
+              className="w-12 h-12 bg-blue-100 rounded-full mx-auto mb-3 flex items-center justify-center"
+            >
+              <Truck className="w-6 h-6 text-blue-600" />
+            </motion.div>
+            <h3 className="font-bold text-lg mb-2">Envío Rápido</h3>
+            <p className="text-gray-600 text-sm">
+              Recibe tus productos en 24-48 horas
+            </p>
+          </motion.div>
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.05, y: -5 }}
+            className="bg-white rounded-xl shadow-lg p-6 text-center"
+          >
+            <motion.div
+              whileHover={{ rotate: 360 }}
+              transition={{ duration: 0.6 }}
+              className="w-12 h-12 bg-green-100 rounded-full mx-auto mb-3 flex items-center justify-center"
+            >
+              <Shield className="w-6 h-6 text-green-600" />
+            </motion.div>
+            <h3 className="font-bold text-lg mb-2">Compra Segura</h3>
+            <p className="text-gray-600 text-sm">
+              Tus datos están protegidos
+            </p>
+          </motion.div>
+          <motion.div
+            variants={itemVariants}
+            whileHover={{ scale: 1.05, y: -5 }}
+            className="bg-white rounded-xl shadow-lg p-6 text-center"
+          >
+            <motion.div
+              whileHover={{ rotate: 360 }}
+              transition={{ duration: 0.6 }}
+              className="w-12 h-12 bg-purple-100 rounded-full mx-auto mb-3 flex items-center justify-center"
+            >
+              <RefreshCw className="w-6 h-6 text-purple-600" />
+            </motion.div>
+            <h3 className="font-bold text-lg mb-2">Devoluciones</h3>
+            <p className="text-gray-600 text-sm">
+              30 días para devolver tu compra
+            </p>
+          </motion.div>
+        </motion.section>
+        </div>
+
+      {/* Modal de Producto */}
+      <ProductModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

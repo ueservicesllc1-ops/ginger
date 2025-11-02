@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Confirmación de Cita - Ginbri Store</title>
+    <style>
+        /* Reset styles */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+        
+        /* Media queries para móviles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            .content {
+                padding: 20px 15px !important;
+            }
+            .header-padding {
+                padding: 20px 15px !important;
+            }
+            .footer-padding {
+                padding: 15px !important;
+            }
+            h1 {
+                font-size: 24px !important;
+            }
+            h2 {
+                font-size: 20px !important;
+            }
+            h3 {
+                font-size: 16px !important;
+            }
+            .detail-table {
+                width: 100% !important;
+            }
+            .detail-label {
+                width: 100% !important;
+                display: block !important;
+                padding-bottom: 5px !important;
+            }
+            .detail-value {
+                width: 100% !important;
+                display: block !important;
+                padding-bottom: 15px !important;
+            }
+            .info-box {
+                padding: 15px !important;
+                margin-bottom: 20px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; background-color: #f5f5f5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;">
+    <!-- Wrapper -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f5f5f5; padding: 20px 0;">
+        <tr>
+            <td align="center" style="padding: 0;">
+                <!-- Container -->
+                <table class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 600px; width: 100%;">
+                    <!-- Header -->
+                    <tr>
+                        <td class="header-padding" style="background-color: #000000; padding: 30px 20px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;">Ginbri Store</h1>
+                            <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px;">Personal Shopper</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                        <td class="content" style="padding: 40px 30px;">
+                            <h2 style="color: #1f2937; margin: 0 0 20px 0; font-size: 24px; font-weight: bold;">
+                                ¡Cita Confirmada con Éxito! ✅
+                            </h2>
+                            
+                            <p style="color: #4b5563; margin: 0 0 20px 0; font-size: 16px; line-height: 1.6;">
+                                Hola <strong style="color: #111827;">{{customer_name}}</strong>,
+                            </p>
+                            
+                            <p style="color: #4b5563; margin: 0 0 30px 0; font-size: 16px; line-height: 1.6;">
+                                Tu cita con nuestro Personal Shopper ha sido confirmada exitosamente. Te esperamos para ayudarte a encontrar los mejores productos según tus necesidades.
+                            </p>
+                            
+                            <!-- Detalles de la Cita -->
+                            <table class="info-box" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
+                                <tr>
+                                    <td>
+                                        <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 18px; font-weight: bold; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
+                                            📅 Detalles de tu Cita
+                                        </h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px 0;">
+                                        <table class="detail-table" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                                <td class="detail-label" style="width: 40%; padding: 8px 0; vertical-align: top;">
+                                                    <strong style="color: #374151; font-size: 14px; display: block;">Fecha:</strong>
+                                                </td>
+                                                <td class="detail-value" style="padding: 8px 0; vertical-align: top;">
+                                                    <span style="color: #111827; font-size: 14px; display: block;">{{appointment_date}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="detail-label" style="width: 40%; padding: 8px 0; vertical-align: top;">
+                                                    <strong style="color: #374151; font-size: 14px; display: block;">Horarios:</strong>
+                                                </td>
+                                                <td class="detail-value" style="padding: 8px 0; vertical-align: top;">
+                                                    <span style="color: #111827; font-size: 14px; display: block;">{{appointment_time}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="detail-label" style="width: 40%; padding: 8px 0; vertical-align: top;">
+                                                    <strong style="color: #374151; font-size: 14px; display: block;">Duración:</strong>
+                                                </td>
+                                                <td class="detail-value" style="padding: 8px 0; vertical-align: top;">
+                                                    <span style="color: #111827; font-size: 14px; display: block;">{{appointment_hours}} hora(s)</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="detail-label" style="width: 40%; padding: 8px 0; vertical-align: top;">
+                                                    <strong style="color: #374151; font-size: 14px; display: block;">Total Pagado:</strong>
+                                                </td>
+                                                <td class="detail-value" style="padding: 8px 0; vertical-align: top;">
+                                                    <span style="color: #2563eb; font-size: 18px; font-weight: bold; display: block;">{{total_price}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="detail-label" style="width: 40%; padding: 8px 0; vertical-align: top;">
+                                                    <strong style="color: #374151; font-size: 14px; display: block;">Método de Pago:</strong>
+                                                </td>
+                                                <td class="detail-value" style="padding: 8px 0; vertical-align: top;">
+                                                    <span style="color: #111827; font-size: 14px; text-transform: capitalize; display: block;">{{payment_method}}</span>
+                                                </td>
+                                            </tr>
+                                            {% if notes != "N/A" and notes != "" %}
+                                            <tr>
+                                                <td class="detail-label" style="width: 40%; padding: 8px 0; vertical-align: top;">
+                                                    <strong style="color: #374151; font-size: 14px; display: block;">Notas:</strong>
+                                                </td>
+                                                <td class="detail-value" style="padding: 8px 0; vertical-align: top;">
+                                                    <span style="color: #111827; font-size: 14px; display: block;">{{notes}}</span>
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Información de Contacto -->
+                            <table class="info-box" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #eff6ff; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
+                                <tr>
+                                    <td>
+                                        <h3 style="color: #1f2937; margin: 0 0 15px 0; font-size: 18px; font-weight: bold;">
+                                            📞 Tu Información de Contacto
+                                        </h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0;">
+                                        <strong style="color: #374151; font-size: 14px; display: block; margin-bottom: 5px;">Email:</strong>
+                                        <span style="color: #111827; font-size: 14px; display: block;">{{customer_email}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0;">
+                                        <strong style="color: #374151; font-size: 14px; display: block; margin-bottom: 5px; margin-top: 10px;">Teléfono:</strong>
+                                        <span style="color: #111827; font-size: 14px; display: block;">{{customer_phone}}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Mensaje Final -->
+                            <p style="color: #4b5563; margin: 30px 0 20px 0; font-size: 16px; line-height: 1.6;">
+                                Si necesitas hacer algún cambio o cancelar tu cita, por favor contáctanos con al menos 24 horas de anticipación.
+                            </p>
+                            
+                            <p style="color: #4b5563; margin: 20px 0 0 0; font-size: 16px; line-height: 1.6;">
+                                ¡Esperamos verte pronto! 🎉
+                            </p>
+                            
+                            <p style="color: #4b5563; margin: 30px 0 0 0; font-size: 16px; line-height: 1.6;">
+                                Saludos cordiales,<br>
+                                <strong style="color: #111827;">Equipo Ginbri Store</strong>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="footer-padding" style="background-color: #f9fafb; padding: 20px 30px; text-align: center; border-top: 1px solid #e5e7eb;">
+                            <p style="color: #6b7280; margin: 0 0 10px 0; font-size: 12px; line-height: 1.5;">
+                                Este es un correo automático. Por favor, no respondas directamente a este mensaje.
+                            </p>
+                            <p style="color: #6b7280; margin: 10px 0; font-size: 12px;">
+                                © 2024 Ginbri Store. Todos los derechos reservados.
+                            </p>
+                            <p style="color: #9ca3af; margin: 10px 0 0 0; font-size: 11px;">
+                                Powered and designed by Freedom Labs
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
