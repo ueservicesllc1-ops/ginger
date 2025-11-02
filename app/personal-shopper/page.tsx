@@ -99,13 +99,18 @@ export default function PersonalShopperPage() {
     return `${year}-${month}-${day}`;
   };
 
-  const formatDisplayDate = (date: Date): string => {
-    return date.toLocaleDateString('es-ES', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  const formatDisplayDate = (date: Date | null): string => {
+    if (!date) return '';
+    try {
+      return date.toLocaleDateString('es-ES', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch (error) {
+      return '';
+    }
   };
 
   const handleDateSelect = (date: Date) => {
@@ -480,7 +485,7 @@ export default function PersonalShopperPage() {
                     <div className="pb-3 border-b border-gray-200">
                       <p className="text-xs text-gray-600 mb-1">Fecha</p>
                       <p className="font-semibold text-sm text-gray-900 capitalize">
-                        {formatDisplayDate(selectedDate)}
+                        {selectedDate ? formatDisplayDate(selectedDate) : ''}
                       </p>
                     </div>
 
@@ -645,7 +650,7 @@ export default function PersonalShopperPage() {
                   <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
                     <p className="text-xs text-gray-600 mb-1">Resumen de tu cita</p>
                     <p className="text-sm font-medium text-gray-900">
-                      {formatDisplayDate(selectedDate)} - {selectedTimes.length} hora{selectedTimes.length > 1 ? 's' : ''}
+                      {selectedDate ? formatDisplayDate(selectedDate) : ''} - {selectedTimes.length} hora{selectedTimes.length > 1 ? 's' : ''}
                     </p>
                     <p className="text-sm font-bold text-blue-600 mt-1">
                       Total: ${calculateTotalPrice().toFixed(2)} USD
@@ -830,28 +835,34 @@ export default function PersonalShopperPage() {
                 Te hemos enviado un correo electrónico con los detalles de tu cita.
               </p>
               
-              <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
-                <div className="space-y-2">
-                  <div>
-                    <p className="text-sm font-medium text-gray-700">Fecha:</p>
-                    <p className="text-sm text-gray-900 capitalize">
-                      {selectedDate && formatDisplayDate(selectedDate)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-700">Horarios:</p>
-                    <p className="text-sm text-gray-900">
-                      {createdAppointment.times.join(', ')} ({createdAppointment.times.length} hora{createdAppointment.times.length > 1 ? 's' : ''})
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-700">Total pagado:</p>
-                    <p className="text-sm font-bold text-blue-600">
-                      ${createdAppointment.totalPrice.toFixed(2)} USD
-                    </p>
+              {createdAppointment && (
+                <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-sm font-medium text-gray-700">Fecha:</p>
+                      <p className="text-sm text-gray-900 capitalize">
+                        {createdAppointment.date || (selectedDate ? formatDisplayDate(selectedDate) : '')}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-700">Horarios:</p>
+                      <p className="text-sm text-gray-900">
+                        {createdAppointment.times && Array.isArray(createdAppointment.times) 
+                          ? `${createdAppointment.times.join(', ')} (${createdAppointment.times.length} hora${createdAppointment.times.length > 1 ? 's' : ''})`
+                          : 'N/A'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-700">Total pagado:</p>
+                      <p className="text-sm font-bold text-blue-600">
+                        ${createdAppointment.totalPrice && typeof createdAppointment.totalPrice === 'number' 
+                          ? createdAppointment.totalPrice.toFixed(2) 
+                          : '0.00'} USD
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <motion.button
                 whileHover={{ scale: 1.05 }}

@@ -35,7 +35,15 @@ export interface AppointmentEmailData {
 export async function sendAppointmentEmail(data: AppointmentEmailData): Promise<boolean> {
   try {
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-      console.warn('EmailJS no está configurado. Configura las variables de entorno necesarias.');
+      const missingVars = [];
+      if (!SERVICE_ID) missingVars.push('NEXT_PUBLIC_EMAILJS_SERVICE_ID');
+      if (!TEMPLATE_ID) missingVars.push('NEXT_PUBLIC_EMAILJS_TEMPLATE_ID');
+      if (!PUBLIC_KEY) missingVars.push('NEXT_PUBLIC_EMAILJS_PUBLIC_KEY');
+      
+      console.warn(
+        `EmailJS no está configurado. Variables faltantes: ${missingVars.join(', ')}. ` +
+        `Configura las variables de entorno necesarias en Railway.`
+      );
       return false;
     }
 
