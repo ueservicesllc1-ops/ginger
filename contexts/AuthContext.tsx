@@ -27,36 +27,76 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Solo ejecutar en el cliente
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    setMounted(true);
+
+    // Verificar que auth esté disponible
     if (!auth) {
+      console.warn('Firebase Auth no está disponible');
       setLoading(false);
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
+    try {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setUser(user);
+        setLoading(false);
+      }, (error) => {
+        console.error('Error en onAuthStateChanged:', error);
+        setLoading(false);
+      });
 
-    return () => unsubscribe();
+      return () => {
+        if (unsubscribe) unsubscribe();
+      };
+    } catch (error) {
+      console.error('Error inicializando auth:', error);
+      setLoading(false);
+    }
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    if (!auth) throw new Error('Firebase Auth no está inicializado');
+    if (typeof window === 'undefined') {
+      throw new Error('Auth solo está disponible en el cliente');
+    }
+    if (!auth) {
+      throw new Error('Firebase Auth no está inicializado');
+    }
     
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error('Error en signIn:', error);
+      throw error;
+    }
   };
 
   const signInWithGoogle = async () => {
-    if (!auth) throw new Error('Firebase Auth no está inicializado');
+    if (typeof window === 'undefined') {
+      throw new Error('Auth solo está disponible en el cliente');
+    }
+    if (!auth) {
+      throw new Error('Firebase Auth no está inicializado');
+    }
     
-    const provider = new GoogleAuthProvider();
-    // Solicitar acceso al perfil y email
-    provider.addScope('profile');
-    provider.addScope('email');
-    
-    await signInWithPopup(auth, provider);
+    try {
+      const provider = new GoogleAuthProvider();
+      // Solicitar acceso al perfil y email
+      provider.addScope('profile');
+      provider.addScope('email');
+      
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Error en signInWithGoogle:', error);
+      throw error;
+    }
   };
 
   const logout = async () => {
