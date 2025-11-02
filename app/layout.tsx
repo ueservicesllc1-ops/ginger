@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: '/favicon.ico', sizes: 'any' },
       { url: '/images/logo.png', sizes: 'any', type: 'image/png' },
       { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
       { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
       { url: '/icons/icon-180x180.png', sizes: '180x180', type: 'image/png' },
     ],
     shortcut: [
-      { url: '/images/logo.png', sizes: 'any' },
+      { url: '/favicon.ico', sizes: 'any' },
     ],
   },
   openGraph: {
@@ -63,7 +64,8 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Ginbri Store" />
         <meta name="mobile-web-app-capable" content="yes" />
-            <link rel="icon" href="/images/logo.png" type="image/png" />
+            <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
             <link rel="apple-touch-icon" href="/icons/icon-180x180.png" />
             <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
             <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
