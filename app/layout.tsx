@@ -68,10 +68,15 @@ export default function RootLayout({
         className={`${inter.variable} antialiased`}
       >
         <AuthProvider>
-          <CartProvider>
-            {children}
-            <PWAInstaller />
-          </CartProvider>
+          {(() => {
+            console.log('🔵 [LAYOUT] Renderizando AuthProvider con children');
+            return (
+              <CartProvider>
+                {children}
+                <PWAInstaller />
+              </CartProvider>
+            );
+          })()}
         </AuthProvider>
         <script
           dangerouslySetInnerHTML={{

@@ -25,39 +25,56 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  console.log('🔵 [AUTH] AuthProvider renderizado');
+  
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    console.log('🟡 [AUTH] useEffect ejecutándose, typeof window:', typeof window);
+    
     // Solo ejecutar en el cliente
     if (typeof window === 'undefined') {
+      console.log('⚠️ [AUTH] Estamos en el servidor, saltando inicialización');
       return;
     }
 
+    console.log('✅ [AUTH] Estamos en el cliente, inicializando...');
     setMounted(true);
 
     // Verificar que auth esté disponible
+    console.log('🟡 [AUTH] Verificando auth:', { hasAuth: !!auth, auth });
+    
     if (!auth) {
-      console.warn('Firebase Auth no está disponible');
+      console.warn('❌ [AUTH] Firebase Auth no está disponible');
       setLoading(false);
       return;
     }
 
+    console.log('✅ [AUTH] Auth disponible, configurando onAuthStateChanged...');
+
     try {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
+        console.log('🔄 [AUTH] Estado de autenticación cambió:', {
+          hasUser: !!user,
+          userEmail: user?.email,
+        });
         setUser(user);
         setLoading(false);
       }, (error) => {
-        console.error('Error en onAuthStateChanged:', error);
+        console.error('❌ [AUTH] Error en onAuthStateChanged:', error);
         setLoading(false);
       });
 
+      console.log('✅ [AUTH] onAuthStateChanged configurado');
+
       return () => {
+        console.log('🧹 [AUTH] Limpiando suscripción');
         if (unsubscribe) unsubscribe();
       };
     } catch (error) {
-      console.error('Error inicializando auth:', error);
+      console.error('❌ [AUTH] Error inicializando auth:', error);
       setLoading(false);
     }
   }, []);
@@ -112,6 +129,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Verificar si el usuario es admin (por email por ahora, después se puede usar custom claims)
   const isAdmin = user?.email === 'admin@ginbristore.com' || false;
 
+  console.log('🟡 [AUTH] Estado actual:', {
+    hasUser: !!user,
+    userEmail: user?.email,
+    isAdmin,
+    loading,
+  });
+
   const value = {
     user,
     loading,
@@ -122,14 +146,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAdmin,
   };
 
+  console.log('✅ [AUTH] Proveyendo contexto con value');
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
+  console.log('🟡 [useAuth] Hook llamado');
   const context = useContext(AuthContext);
+  console.log('🟡 [useAuth] Context obtenido:', {
+    hasContext: !!context,
+    contextUndefined: context === undefined,
+  });
+  
   if (context === undefined) {
+    console.error('❌ [useAuth] Context es undefined - useAuth debe usarse dentro de un AuthProvider');
     throw new Error('useAuth debe usarse dentro de un AuthProvider');
   }
+  
+  console.log('✅ [useAuth] Retornando context');
   return context;
 }
 

@@ -8,6 +8,8 @@ import { LogIn, Lock, Mail } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLoginPage() {
+  console.log('🔵 [LOGIN] Componente renderizado');
+  
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,10 +19,20 @@ export default function AdminLoginPage() {
   
   // Intentar obtener auth de forma segura
   let authContext = null;
+  console.log('🟡 [LOGIN] Intentando obtener AuthContext...');
+  
   try {
     authContext = useAuth();
+    console.log('✅ [LOGIN] AuthContext obtenido:', {
+      hasUser: !!authContext?.user,
+      loading: authContext?.loading,
+      hasSignIn: !!authContext?.signIn,
+      hasSignInWithGoogle: !!authContext?.signInWithGoogle,
+      isAdmin: authContext?.isAdmin,
+    });
   } catch (err: any) {
-    console.error('Error obteniendo AuthContext:', err);
+    console.error('❌ [LOGIN] Error obteniendo AuthContext:', err);
+    console.error('❌ [LOGIN] Stack trace:', err.stack);
     if (!authError) {
       setAuthError('Error al inicializar autenticación. Por favor, recarga la página.');
     }
@@ -109,8 +121,17 @@ export default function AdminLoginPage() {
     }
   };
 
+  console.log('🟡 [LOGIN] Verificando estado de renderizado:', {
+    authError,
+    hasAuthContext: !!authContext,
+    loading,
+    user: !!user,
+    isAdmin,
+  });
+
   // Mostrar error si no se puede obtener el contexto
   if (authError && !authContext) {
+    console.log('🔴 [LOGIN] Mostrando pantalla de error - authError y sin authContext');
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
@@ -134,6 +155,7 @@ export default function AdminLoginPage() {
 
   // Mostrar loading mientras se inicializa auth
   if (loading) {
+    console.log('🟡 [LOGIN] Mostrando pantalla de loading');
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center px-4">
         <div className="text-center">
@@ -143,6 +165,8 @@ export default function AdminLoginPage() {
       </div>
     );
   }
+
+  console.log('✅ [LOGIN] Renderizando formulario de login');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center px-4">

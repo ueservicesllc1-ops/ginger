@@ -30,6 +30,7 @@ export default function AdminLayout({
 
   // Permitir acceso a login sin autenticación
   if (pathname === '/admin/login') {
+    console.log('🟢 [ADMIN LAYOUT] Ruta es /admin/login, renderizando children sin verificación');
     return (
       <div className="min-h-screen bg-gray-50">
         {children}
