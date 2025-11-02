@@ -4,15 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { LogIn, Lock, Mail } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLoginPage() {
   console.log('🔵 [LOGIN] Componente renderizado');
   
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   
@@ -42,43 +39,6 @@ export default function AdminLoginPage() {
     }
   }, [user, isAdmin, loading, router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setSubmitting(true);
-
-    if (!signIn) {
-      setError('El sistema de autenticación no está disponible. Por favor, recarga la página.');
-      setSubmitting(false);
-      return;
-    }
-
-    try {
-      await signIn(email, password);
-      // Verificar que sea admin - el isAdmin del contexto se actualizará automáticamente
-      // Esperar un momento para que el estado se actualice
-      setTimeout(() => {
-        if (isAdmin || email === 'admin@ginbristore.com' || email === 'ueservicesllc1@gmail.com') {
-          router.push('/admin');
-        } else {
-          setError('Acceso denegado. Solo administradores autorizados.');
-          setSubmitting(false);
-        }
-      }, 100);
-    } catch (err: any) {
-      console.error('Error de autenticación:', err);
-      if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-        setError('Credenciales incorrectas. Verifica tu email y contraseña.');
-      } else if (err.code === 'auth/invalid-email') {
-        setError('Email inválido.');
-      } else if (err.code === 'auth/too-many-requests') {
-        setError('Demasiados intentos fallidos. Intenta más tarde.');
-      } else {
-        setError('Error al iniciar sesión. Intenta de nuevo.');
-      }
-      setSubmitting(false);
-    }
-  };
 
   const handleGoogleSignIn = async () => {
     setError('');
@@ -161,83 +121,17 @@ export default function AdminLoginPage() {
               <p className="text-gray-300">Inicie sesión para continuar</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-900/50 border-2 border-red-600 text-red-200 px-4 py-3 rounded-lg text-sm"
-                >
-                  {error}
-                </motion.div>
-              )}
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                  Correo Electrónico
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-900 border-2 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
-                    placeholder="admin@ginbristore.com"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                  Contraseña
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-900 border-2 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
-                    placeholder="••••••••"
-                  />
-                </div>
-              </div>
-
-          <motion.button
-            type="submit"
-            disabled={submitting || loading}
-            whileHover={{ scale: submitting || loading ? 1 : 1.02 }}
-            whileTap={{ scale: submitting || loading ? 1 : 0.98 }}
-            className="w-full bg-white hover:bg-gray-200 disabled:bg-gray-600 text-black font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
-          >
-            {submitting || loading ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                Iniciando sesión...
-              </>
-            ) : (
-              <>
-                <LogIn className="w-5 h-5" />
-                Iniciar Sesión
-              </>
-            )}
-          </motion.button>
-        </form>
-
-        {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-700"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-black text-gray-400">O continúa con</span>
-            </div>
-          </div>
+        <div className="space-y-6">
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-red-900/50 border-2 border-red-600 text-red-200 px-4 py-3 rounded-lg text-sm"
+            >
+              {error}
+            </motion.div>
+          )}
+        </div>
 
         {/* Google Sign In Button */}
           <motion.button
@@ -269,11 +163,6 @@ export default function AdminLoginPage() {
           {submitting || loading ? 'Iniciando sesión...' : 'Continuar con Google'}
         </motion.button>
 
-          <div className="mt-6 text-center">
-            <p className="text-xs text-gray-400">
-              Credenciales: admin@ginbristore.com / admin123
-            </p>
-          </div>
       </motion.div>
     </div>
   );
