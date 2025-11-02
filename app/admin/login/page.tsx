@@ -15,28 +15,19 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
   
-  // Intentar obtener auth de forma segura
-  let authContext = null;
+  // Obtener auth directamente - no usar try-catch porque los hooks deben estar siempre disponibles
   console.log('🟡 [LOGIN] Intentando obtener AuthContext...');
   
-  try {
-    authContext = useAuth();
-    console.log('✅ [LOGIN] AuthContext obtenido:', {
-      hasUser: !!authContext?.user,
-      loading: authContext?.loading,
-      hasSignIn: !!authContext?.signIn,
-      hasSignInWithGoogle: !!authContext?.signInWithGoogle,
-      isAdmin: authContext?.isAdmin,
-    });
-  } catch (err: any) {
-    console.error('❌ [LOGIN] Error obteniendo AuthContext:', err);
-    console.error('❌ [LOGIN] Stack trace:', err.stack);
-    if (!authError) {
-      setAuthError('Error al inicializar autenticación. Por favor, recarga la página.');
-    }
-  }
+  const authContext = useAuth();
+  
+  console.log('✅ [LOGIN] AuthContext obtenido:', {
+    hasUser: !!authContext?.user,
+    loading: authContext?.loading,
+    hasSignIn: !!authContext?.signIn,
+    hasSignInWithGoogle: !!authContext?.signInWithGoogle,
+    isAdmin: authContext?.isAdmin,
+  });
 
   const signIn = authContext?.signIn;
   const signInWithGoogle = authContext?.signInWithGoogle;
@@ -129,25 +120,14 @@ export default function AdminLoginPage() {
     isAdmin,
   });
 
-  // Mostrar error si no se puede obtener el contexto
-  if (authError && !authContext) {
-    console.log('🔴 [LOGIN] Mostrando pantalla de error - authError y sin authContext');
+  // Mostrar loading mientras se inicializa auth
+  if (loading) {
+    console.log('🟡 [LOGIN] Mostrando pantalla de loading');
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center">
-          <div className="text-red-600 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error de Autenticación</h2>
-          <p className="text-gray-600 mb-6">{authError}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-          >
-            Recargar Página
-          </button>
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+          <p className="mt-4 text-white">Cargando...</p>
         </div>
       </div>
     );
