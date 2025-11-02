@@ -27,12 +27,7 @@ export default function EditProductPage() {
   });
 
   useEffect(() => {
-    const adminSession = localStorage.getItem('admin_session');
-    if (!adminSession) {
-      router.push('/admin/login');
-      return;
-    }
-
+    // La autenticación se maneja en el layout
     if (existingProduct) {
       setFormData({
         name: existingProduct.name,

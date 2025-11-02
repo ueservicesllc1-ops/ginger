@@ -45,7 +45,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Solo cachear requests HTTP/HTTPS (no chrome-extension://, etc.)
-  if (!event.request.url.startsWith('http') || !event.request.url.startsWith('https')) {
+  if (!event.request.url.startsWith('http://') && !event.request.url.startsWith('https://')) {
     return;
   }
 

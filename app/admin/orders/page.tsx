@@ -30,12 +30,7 @@ export default function AdminOrdersPage() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    const adminSession = localStorage.getItem('admin_session');
-    if (!adminSession) {
-      router.push('/admin/login');
-      return;
-    }
-
+    // La autenticación se maneja en el layout
     // TODO: Cargar pedidos desde Firebase Firestore
     loadOrders();
   }, [router]);

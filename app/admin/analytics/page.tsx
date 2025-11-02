@@ -17,12 +17,7 @@ export default function AdminAnalyticsPage() {
   });
 
   useEffect(() => {
-    const adminSession = localStorage.getItem('admin_session');
-    if (!adminSession) {
-      router.push('/admin/login');
-      return;
-    }
-
+    // La autenticación se maneja en el layout
     // TODO: Cargar analíticas desde Firebase
     loadAnalytics();
   }, [router]);
