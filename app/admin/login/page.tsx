@@ -143,7 +143,7 @@ export default function AdminLoginPage() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md"
+        className="bg-black border-2 border-gray-700 rounded-2xl shadow-2xl p-8 w-full max-w-md"
       >
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
@@ -157,63 +157,63 @@ export default function AdminLoginPage() {
               />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Panel de Administración</h1>
-          <p className="text-gray-600">Inicie sesión para continuar</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Panel de Administración</h1>
+              <p className="text-gray-300">Inicie sesión para continuar</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
-            >
-              {error}
-            </motion.div>
-          )}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-900/50 border-2 border-red-600 text-red-200 px-4 py-3 rounded-lg text-sm"
+                >
+                  {error}
+                </motion.div>
+              )}
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Correo Electrónico
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
-                placeholder="admin@ginbristore.com"
-              />
-            </div>
-          </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  Correo Electrónico
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-900 border-2 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                    placeholder="admin@ginbristore.com"
+                  />
+                </div>
+              </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Contraseña
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
-                placeholder="••••••••"
-              />
-            </div>
-          </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                  Contraseña
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-900 border-2 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
 
           <motion.button
             type="submit"
             disabled={submitting || loading}
             whileHover={{ scale: submitting || loading ? 1 : 1.02 }}
             whileTap={{ scale: submitting || loading ? 1 : 0.98 }}
-            className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
+            className="w-full bg-white hover:bg-gray-200 disabled:bg-gray-600 text-black font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
           >
             {submitting || loading ? (
               <>
@@ -230,24 +230,24 @@ export default function AdminLoginPage() {
         </form>
 
         {/* Divider */}
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-700"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-black text-gray-400">O continúa con</span>
+            </div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">O continúa con</span>
-          </div>
-        </div>
 
         {/* Google Sign In Button */}
-        <motion.button
-          type="button"
-          onClick={handleGoogleSignIn}
-          disabled={submitting || loading}
-          whileHover={{ scale: submitting || loading ? 1 : 1.02 }}
-          whileTap={{ scale: submitting || loading ? 1 : 0.98 }}
-          className="w-full bg-white hover:bg-gray-50 border-2 border-gray-300 text-gray-700 font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-3 shadow-sm"
-        >
+          <motion.button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={submitting || loading}
+            whileHover={{ scale: submitting || loading ? 1 : 1.02 }}
+            whileTap={{ scale: submitting || loading ? 1 : 0.98 }}
+            className="w-full bg-gray-900 hover:bg-gray-800 border-2 border-gray-700 text-white font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-3 shadow-sm"
+          >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
@@ -269,11 +269,11 @@ export default function AdminLoginPage() {
           {submitting || loading ? 'Iniciando sesión...' : 'Continuar con Google'}
         </motion.button>
 
-        <div className="mt-6 text-center">
-          <p className="text-xs text-gray-500">
-            Credenciales: admin@ginbristore.com / admin123
-          </p>
-        </div>
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-400">
+              Credenciales: admin@ginbristore.com / admin123
+            </p>
+          </div>
       </motion.div>
     </div>
   );
