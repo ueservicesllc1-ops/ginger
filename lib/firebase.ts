@@ -1,6 +1,7 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { getAnalytics, Analytics } from 'firebase/analytics';
+import { getAuth, Auth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,6 +17,7 @@ const firebaseConfig = {
 // Initialize Firebase
 let app: FirebaseApp;
 let db: Firestore;
+let auth: Auth | null = null;
 let analytics: Analytics | null = null;
 
 if (typeof window !== 'undefined') {
@@ -27,6 +29,7 @@ if (typeof window !== 'undefined') {
   }
   
   db = getFirestore(app);
+  auth = getAuth(app);
   
   // Analytics solo funciona en el navegador
   if (typeof window !== 'undefined') {
@@ -40,9 +43,10 @@ if (typeof window !== 'undefined') {
     app = getApps()[0];
   }
   db = getFirestore(app);
+  // Auth no se inicializa en el servidor
 }
 
-export { app, db, analytics };
+export { app, db, auth, analytics };
 export default app;
 
 

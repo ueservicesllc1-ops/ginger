@@ -1,10 +1,11 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import AdminNavbar from '@/components/admin/AdminNavbar';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLayout({
   children,
@@ -13,41 +14,18 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, loading, isAdmin } = useAuth();
 
   useEffect(() => {
-    // Verificar autenticación básica (por ahora solo verifica si hay sesión en localStorage)
-    // Más adelante se puede integrar con Firebase Auth
-    const checkAuth = () => {
-      // Verificar que estamos en el cliente
-      if (typeof window === 'undefined') {
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const adminSession = localStorage.getItem('admin_session');
-        if (adminSession) {
-          setIsAuthenticated(true);
-        } else {
-          // Si no está en login, redirigir
-          if (pathname !== '/admin/login') {
-            router.push('/admin/login');
-          }
-        }
-      } catch (error) {
-        console.error('Error verificando autenticación:', error);
+    // Si ya terminó de cargar y no hay usuario o no es admin, redirigir
+    if (!loading) {
+      if (!user || !isAdmin) {
         if (pathname !== '/admin/login') {
           router.push('/admin/login');
         }
-      } finally {
-        setIsLoading(false);
       }
-    };
-
-    checkAuth();
-  }, [pathname, router]);
+    }
+  }, [user, loading, isAdmin, pathname, router]);
 
   // Permitir acceso a login sin autenticación
   if (pathname === '/admin/login') {
@@ -58,7 +36,8 @@ export default function AdminLayout({
     );
   }
 
-  if (isLoading) {
+  // Mostrar loading mientras verifica autenticación
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -69,8 +48,9 @@ export default function AdminLayout({
     );
   }
 
-  if (!isAuthenticated && pathname !== '/admin/login') {
-    return null; // El redirect se maneja en el useEffect
+  // Si no está autenticado o no es admin, no mostrar contenido (redirect se maneja en useEffect)
+  if (!user || !isAdmin) {
+    return null;
   }
 
   return (

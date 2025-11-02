@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from '@/contexts/CartContext';
+import { AuthProvider } from '@/contexts/AuthContext';
 import PWAInstaller from '@/components/PWAInstaller';
 
 const inter = Inter({
@@ -66,10 +67,12 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
-        <CartProvider>
-          {children}
-          <PWAInstaller />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            {children}
+            <PWAInstaller />
+          </CartProvider>
+        </AuthProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `

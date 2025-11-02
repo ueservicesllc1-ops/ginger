@@ -3,15 +3,20 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { LogOut, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminNavbar() {
   const router = useRouter();
+  const { logout, user } = useAuth();
 
-  const handleLogout = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('admin_session');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/admin/login');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      router.push('/admin/login');
     }
-    router.push('/admin/login');
   };
 
   return (

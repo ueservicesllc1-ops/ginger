@@ -17,15 +17,8 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
-    // Verificar autenticación
-    const adminSession = localStorage.getItem('admin_session');
-    if (!adminSession) {
-      router.push('/admin/login');
-      return;
-    }
-
-    // Cargar estadísticas (simuladas por ahora)
-    // Más adelante se conectarán con Firebase
+    // La autenticación se maneja en el layout
+    // Solo cargar estadísticas si estamos autenticados
     loadStats();
   }, [router]);
 

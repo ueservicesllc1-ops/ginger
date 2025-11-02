@@ -1,37 +1,53 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { LogIn, Lock, Mail } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const { signIn, user, isAdmin, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Si ya está autenticado y es admin, redirigir al dashboard
+  useEffect(() => {
+    if (!loading && user && isAdmin) {
+      router.push('/admin');
+    }
+  }, [user, isAdmin, loading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
+    setSubmitting(true);
 
-    // Autenticación básica (por ahora)
-    // TODO: Integrar con Firebase Auth
-    if (email === 'admin@ginbristore.com' && password === 'admin123') {
-      // Guardar sesión
-      localStorage.setItem('admin_session', JSON.stringify({
-        email,
-        loginTime: new Date().toISOString(),
-      }));
-      
-      // Redirigir al dashboard
-      router.push('/admin');
-    } else {
-      setError('Credenciales incorrectas. Use: admin@ginbristore.com / admin123');
-      setLoading(false);
+    try {
+      await signIn(email, password);
+      // Verificar que sea admin
+      if (email === 'admin@ginbristore.com') {
+        router.push('/admin');
+      } else {
+        setError('Acceso denegado. Solo administradores autorizados.');
+        setSubmitting(false);
+      }
+    } catch (err: any) {
+      console.error('Error de autenticación:', err);
+      if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+        setError('Credenciales incorrectas. Verifica tu email y contraseña.');
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Email inválido.');
+      } else if (err.code === 'auth/too-many-requests') {
+        setError('Demasiados intentos fallidos. Intenta más tarde.');
+      } else {
+        setError('Error al iniciar sesión. Intenta de nuevo.');
+      }
+      setSubmitting(false);
     }
   };
 
@@ -108,12 +124,12 @@ export default function AdminLoginPage() {
 
           <motion.button
             type="submit"
-            disabled={loading}
-            whileHover={{ scale: loading ? 1 : 1.02 }}
-            whileTap={{ scale: loading ? 1 : 0.98 }}
+            disabled={submitting || loading}
+            whileHover={{ scale: submitting || loading ? 1 : 1.02 }}
+            whileTap={{ scale: submitting || loading ? 1 : 0.98 }}
             className="w-full bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2"
           >
-            {loading ? (
+            {submitting || loading ? (
               <>
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                 Iniciando sesión...
