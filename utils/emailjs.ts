@@ -8,14 +8,21 @@
 
 import emailjs from '@emailjs/browser';
 
-const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '';
-const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '';
-const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '';
+// Leer variables directamente - Next.js las inyecta en tiempo de build para NEXT_PUBLIC_*
+const getServiceId = () => process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '';
+const getTemplateId = () => process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '';
+const getPublicKey = () => process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '';
 
-// Initialize EmailJS
-if (PUBLIC_KEY) {
-  emailjs.init(PUBLIC_KEY);
-}
+// Inicializar EmailJS cuando se necesite
+let emailjsInitialized = false;
+const initializeEmailJS = () => {
+  if (emailjsInitialized) return;
+  const publicKey = getPublicKey();
+  if (publicKey) {
+    emailjs.init(publicKey);
+    emailjsInitialized = true;
+  }
+};
 
 export interface AppointmentEmailData {
   customerName: string;
@@ -34,15 +41,40 @@ export interface AppointmentEmailData {
  */
 export async function sendAppointmentEmail(data: AppointmentEmailData): Promise<boolean> {
   try {
+    // Leer variables dinámicamente
+    const SERVICE_ID = getServiceId();
+    const TEMPLATE_ID = getTemplateId();
+    const PUBLIC_KEY = getPublicKey();
+    
+    // Inicializar EmailJS si no está inicializado
+    initializeEmailJS();
+    
+    // Debug: Log los valores (solo en desarrollo)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[EmailJS Debug] Variables:', {
+        SERVICE_ID: SERVICE_ID ? `${SERVICE_ID.substring(0, 10)}...` : 'VACÍO',
+        TEMPLATE_ID: TEMPLATE_ID ? `${TEMPLATE_ID.substring(0, 10)}...` : 'VACÍO',
+        PUBLIC_KEY: PUBLIC_KEY ? `${PUBLIC_KEY.substring(0, 10)}...` : 'VACÍO',
+      });
+    }
+    
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
       const missingVars = [];
       if (!SERVICE_ID) missingVars.push('NEXT_PUBLIC_EMAILJS_SERVICE_ID');
       if (!TEMPLATE_ID) missingVars.push('NEXT_PUBLIC_EMAILJS_TEMPLATE_ID');
       if (!PUBLIC_KEY) missingVars.push('NEXT_PUBLIC_EMAILJS_PUBLIC_KEY');
       
-      console.warn(
-        `EmailJS no está configurado. Variables faltantes: ${missingVars.join(', ')}. ` +
-        `Configura las variables de entorno necesarias en Railway.`
+      console.error(
+        `❌ EmailJS no está configurado. Variables faltantes: ${missingVars.join(', ')}.\n` +
+        `⚠️  IMPORTANTE: En Railway, asegúrate de:\n` +
+        `   1. Agregar las variables en la sección "Variables" del proyecto\n` +
+        `   2. REINICIAR el deployment después de agregar las variables\n` +
+        `   3. Verificar que no hay espacios extra en los valores\n` +
+        `   4. Las variables NEXT_PUBLIC_* deben estar disponibles en tiempo de BUILD\n\n` +
+        `   Valores detectados:\n` +
+        `   - SERVICE_ID: ${SERVICE_ID ? '✅ configurado' : '❌ faltante'}\n` +
+        `   - TEMPLATE_ID: ${TEMPLATE_ID ? '✅ configurado' : '❌ faltante'}\n` +
+        `   - PUBLIC_KEY: ${PUBLIC_KEY ? '✅ configurado' : '❌ faltante'}`
       );
       return false;
     }
