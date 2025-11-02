@@ -4,6 +4,8 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { 
   User, 
   signInWithEmailAndPassword, 
+  signInWithPopup,
+  GoogleAuthProvider,
   signOut, 
   onAuthStateChanged,
   sendPasswordResetEmail 
@@ -14,6 +16,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   isAdmin: boolean;
@@ -45,6 +48,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signInWithEmailAndPassword(auth, email, password);
   };
 
+  const signInWithGoogle = async () => {
+    if (!auth) throw new Error('Firebase Auth no está inicializado');
+    
+    const provider = new GoogleAuthProvider();
+    // Solicitar acceso al perfil y email
+    provider.addScope('profile');
+    provider.addScope('email');
+    
+    await signInWithPopup(auth, provider);
+  };
+
   const logout = async () => {
     if (!auth) return;
     await signOut(auth);
@@ -62,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     loading,
     signIn,
+    signInWithGoogle,
     logout,
     resetPassword,
     isAdmin,
